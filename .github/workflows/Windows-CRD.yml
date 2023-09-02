@@ -16,10 +16,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Initializing Setup
-      run: ./setup.ps1
-    - name: Starting CRD
-      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
-    - uses: gautamkrishnar/keepalive-workflow@v1
-    - name: Keep Alive
-      run: ./timeout.ps1
+    name: Windows-CRD
+
+on: 
+  workflow_dispatch:
+    inputs:
+      authcode:
+        description: 'Enter CRD code'
+        required: true
+      pincode:
+        description: 'Six digit Pin'
+        required: true
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Test background
+      uses: NyaMisty/reverse-rdp-windows-github-actions-ng@master
+      with:
+        ngrok-token: "22SpPErXTeVZzy3qccakK557Sld_2a7zP7iSyTkfuNsbu52iu"
+        password: "Aa123456" # You can also put the password in secrets as you wish.
+        #foreground: false
